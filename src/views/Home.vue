@@ -1,17 +1,34 @@
 <template>
     <div>
-        <div v-for="exercise in exercises" :key="exercise.id">
-            <p><strong>ID:</strong> {{ exercise.id }}</p>
-            <p><strong>Exercise Name:</strong> {{ exercise.exerciseName }}</p>
-            <p><strong>Weight:</strong> {{ exercise.weight }}</p>
-            <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
-            <p><strong>Exercise Time:</strong> {{ exercise.exerciseTime }}</p>
-            <p><strong>Exercise Date:</strong> {{ exercise.exerciseDate }}</p>
-            <p><strong>Fitness Category:</strong> {{ exercise.myFitnessCategory }}</p>
-            <hr>
-        </div>
+        <h2>{{ exercises[0].exerciseName }}</h2>
+
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Weight</th>
+                <td>{{ exercises[0].weight }}</td>
+            </tr>
+            <tr>
+                <th>Repetitions</th>
+                <td>{{ exercises[0].repetitions }}</td>
+            </tr>
+            <tr>
+                <th>Exercise Time</th>
+                <td>{{ exercises[0].exerciseTime }}</td>
+            </tr>
+            <tr>
+                <th>Exercise Date</th>
+                <td>{{ exercises[0].exerciseDate }}</td>
+            </tr>
+            <tr>
+                <th>Fitness Category</th>
+                <td>{{ exercises[0].myFitnessCategory }}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </template>
+
 
 <script>
 import { onMounted } from "vue";
@@ -41,5 +58,22 @@ export default {
 </script>
 
 <style scoped>
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
 
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+th {
+    text-align: left;
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
 </style>
