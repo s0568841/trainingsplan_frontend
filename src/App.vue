@@ -1,12 +1,13 @@
 
 <template>
-   <ul>
-      <li><router-link :to = "{name: 'home'}">Home</router-link></li>
-      <li><router-link :to = "{name: 'about'}">About</router-link></li>
-   </ul>
-   <router-view></router-view>
+   <div>
+      <navbar></navbar> <!-- Add the navbar component -->
+      <router-view></router-view> <!-- Add the router view for rendering the current route -->
+   </div>
 </template>
 
+
 <script setup>
-import { RouterView, RouterLink } from "vue-router";
+import { RouterView, RouterLink } from 'vue-router';
 </script>
+

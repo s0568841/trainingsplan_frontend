@@ -1,55 +1,43 @@
 <template>
-    <h1>Trainingsplan</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-        </tr>
-        </tbody>
-    </table>
+    <div>
+        <div v-for="exercise in exercises" :key="exercise.id">
+            <p><strong>ID:</strong> {{ exercise.id }}</p>
+            <p><strong>Exercise Name:</strong> {{ exercise.exerciseName }}</p>
+            <p><strong>Weight:</strong> {{ exercise.weight }}</p>
+            <p><strong>Repetitions:</strong> {{ exercise.repetitions }}</p>
+            <p><strong>Exercise Time:</strong> {{ exercise.exerciseTime }}</p>
+            <p><strong>Exercise Date:</strong> {{ exercise.exerciseDate }}</p>
+            <p><strong>Fitness Category:</strong> {{ exercise.myFitnessCategory }}</p>
+            <hr>
+        </div>
+    </div>
 </template>
 
 <script>
-import {onMounted} from "vue";
+import { onMounted } from "vue";
 export default {
     name: "Home.vue",
-    data () {
+    data() {
         return {
-            exercise: [
-
-            ]
-        }
+            exercises: [],
+        };
     },
-    methods: {
-
-    },
+    methods: {},
     mounted() {
         const requestOptions = {
-            method: 'GET',
-            redirect: 'follow'
-        }
+            method: "GET",
+            redirect: "follow",
+        };
 
-        fetch('http://localhost:8080/Exercise/4', requestOptions)
-            .then(response => response.json())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error))
-    }
-}
+        fetch("http://localhost:8080/Exercise/4", requestOptions)
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result); // Debug: Log the result from the backend
+                this.exercises = [result]; // Wrap the result in an array for iteration
+            })
+            .catch((error) => console.log("error", error));
+    },
+};
 </script>
 
 <style scoped>
