@@ -1,63 +1,94 @@
 <template>
     <div>
-        <div v-if="exercise">
-            <h2>{{ exercise.exerciseName }}</h2>
-
-            <table class="table">
-                <tbody>
-                <tr>
-                    <th>Weight</th>
-                    <td>{{ exercise.weight }}</td>
-                </tr>
-                <tr>
-                    <th>Repetitions</th>
-                    <td>{{ exercise.repetitions }}</td>
-                </tr>
-                <tr>
-                    <th>Exercise Time</th>
-                    <td>{{ exercise.exerciseTime }}</td>
-                </tr>
-                <tr>
-                    <th>Exercise Date</th>
-                    <td>{{ exercise.exerciseDate }}</td>
-                </tr>
-                <tr>
-                    <th>Fitness Category</th>
-                    <td>{{ exercise.myFitnessCategory }}</td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." class="search-input" v-model="searchId" />
+            <button class="search-button" @click="searchExercise">Search</button>
         </div>
 
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+
         <div v-else>
-            Loading exercise data...
+            <div v-if="exercise">
+                <h2>{{ exercise.exerciseName }}</h2>
+
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>Weight</th>
+                        <td>{{ exercise.weight }}</td>
+                    </tr>
+                    <tr>
+                        <th>Repetitions</th>
+                        <td>{{ exercise.repetitions }}</td>
+                    </tr>
+                    <tr>
+                        <th>Exercise Time</th>
+                        <td>{{ exercise.exerciseTime }}</td>
+                    </tr>
+                    <tr>
+                        <th>Exercise Date</th>
+                        <td>{{ exercise.exerciseDate }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fitness Category</th>
+                        <td>{{ exercise.myFitnessCategory }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div v-else-if="isLoading">Loading exercise data...</div>
+
+            <div v-else>No exercise found.</div>
         </div>
     </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 export default {
-    name: "Home.vue",
+    name: "Home",
     data() {
         return {
             exercise: null,
+            searchId: "",
+            errorMessage: "",
+            isLoading: false,
         };
     },
-    mounted() {
-        const requestOptions = {
-            method: "GET",
-            redirect: "follow",
-        };
-        fetch("http://localhost:8080/Exercise/4", requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                this.exercise = result;
-            })
-            .catch((error) => console.log("error", error));
+    methods: {
+        searchExercise() {
+            this.isLoading = true;
+            this.errorMessage = "";
+
+            const requestOptions = {
+                method: "GET",
+                redirect: "follow",
+            };
+
+            fetch(`http://localhost:8080/Exercise/${this.searchId}`, requestOptions)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("This exercise does not exist");
+                    }
+                })
+                .then((result) => {
+                    this.exercise = result;
+                })
+                .catch((error) => {
+                    this.exercise = null;
+                    this.errorMessage = error.message;
+                })
+                .finally(() => {
+                    this.isLoading = false;
+                });
+        },
     },
 };
 </script>
+
 
 <style scoped>
 .table {
