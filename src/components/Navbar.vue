@@ -16,13 +16,48 @@
                     </ul>
                 </div>
                 <div class="search-bar">
-                    <input type="text" placeholder="Search..." class="search-input" />
-                    <button class="search-button">Search</button>
+                    <input type="text" placeholder="Search..." class="search-input" v-model="searchId" />
+                    <button class="search-button" @click="performSearch">Search</button>
                 </div>
             </div>
         </div>
     </nav>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            searchId: "",
+        };
+    },
+    methods: {
+        performSearch() {
+            // Perform the search logic and get the result
+            const requestOptions = {
+                method: "GET",
+                redirect: "follow",
+            };
+
+            fetch(`http://localhost:8080/Exercise/${this.searchId}`, requestOptions)
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error("Exercise not found");
+                    }
+                })
+                .then((result) => {
+                    this.$emit("search-result", result);
+                    this.searchId = ""; // Clear the search input
+                })
+                .catch((error) => {
+                    console.log("Error:", error.message);
+                });
+        },
+    },
+};
+</script>
 
 <style scoped>
 /* Add any custom styles for your navbar */
