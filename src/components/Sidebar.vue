@@ -1,14 +1,18 @@
 <template>
     <div class="sidebar">
-        <button class="sidebar-button">New</button>
+        <button @click="showNewExerciseTable" class="sidebar-button">New</button>
         <button class="sidebar-button">Change</button>
-        <button class="sidebar-button">Search</button>
+        <button class="sidebar-button">Delete</button>
     </div>
 </template>
 
 <script>
 export default {
-    name: "Sidebar",
+    methods: {
+        showNewExerciseTable() {
+            this.$emit("show-new-exercise-table", true);
+        },
+    },
 };
 </script>
 

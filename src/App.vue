@@ -1,28 +1,41 @@
 <template>
    <div class="app-container">
-      <navbar></navbar>
-      <sidebar></sidebar>
+      <Navbar></Navbar>
+      <Sidebar @show-new-exercise-table="toggleNewExerciseTable"></Sidebar>
       <div class="content-container">
          <router-view></router-view>
+         <NewExerciseTable v-if="isShowingNewExerciseTable" :is-visible="isShowingNewExerciseTable" @close-table="closeTable"></NewExerciseTable>
       </div>
    </div>
 </template>
 
-<script setup>
-import { RouterView, RouterLink } from 'vue-router';
+<script>
+import Navbar from "@/components/Navbar.vue";
+import Sidebar from "@/components/Sidebar.vue";
+import NewExerciseTable from "@/components/NewExerciseTable.vue";
+
+export default {
+   components: {
+      Navbar,
+      Sidebar,
+      NewExerciseTable,
+   },
+   data() {
+      return {
+         isShowingNewExerciseTable: false,
+      };
+   },
+   methods: {
+      toggleNewExerciseTable(value) {
+         this.isShowingNewExerciseTable = value;
+      },
+      closeTable() {
+         this.isShowingNewExerciseTable = false;
+      },
+   },
+};
 </script>
 
 <style>
-.app-container {
-   height: 100vh;
-   display: flex;
-   flex-direction: column;
-}
-
-.content-container {
-   flex: 1;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-}
+/* Styles for App.vue */
 </style>
