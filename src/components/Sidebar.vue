@@ -1,8 +1,8 @@
 <template>
     <div class="sidebar">
         <button @click="showNewExerciseTable" class="sidebar-button">New</button>
+        <button @click="showDeleteExerciseTable" class="sidebar-button">Delete</button>
         <button class="sidebar-button">Change</button>
-        <button class="sidebar-button">Delete</button>
     </div>
 </template>
 
@@ -11,6 +11,9 @@ export default {
     methods: {
         showNewExerciseTable() {
             this.$emit("show-new-exercise-table", true);
+        },
+        showDeleteExerciseTable() {
+            this.$emit("show-delete-exercise-table", true);
         },
     },
 };
