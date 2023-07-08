@@ -2,7 +2,7 @@
     <div class="sidebar">
         <button @click="showNewExerciseTable" class="sidebar-button">New</button>
         <button @click="showDeleteExerciseTable" class="sidebar-button">Delete</button>
-        <button class="sidebar-button">Change</button>
+        <button @click="toggleUpdateExerciseTable" class="sidebar-button">Change</button>
     </div>
 </template>
 
@@ -14,6 +14,9 @@ export default {
         },
         showDeleteExerciseTable() {
             this.$emit("show-delete-exercise-table", true);
+        },
+        toggleUpdateExerciseTable() {
+            this.$emit("show-update-exercise-table", true);
         },
     },
 };
