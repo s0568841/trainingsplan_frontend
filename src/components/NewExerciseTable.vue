@@ -39,8 +39,10 @@
                     class="form-control"
                     id="exerciseTime"
                     v-model="exercise.exerciseTime"
-                    placeholder="Exercise Time"
+                    placeholder="hh:mm:ss"
+                    @blur="validateExerciseTime"
                 >
+                <p v-if="timeError" class="error-message">Enter the time in the format: HH:mm:ss</p>
             </div>
             <div class="form-group">
                 <label for="exerciseDate">Exercise Date</label>
@@ -49,8 +51,10 @@
                     class="form-control"
                     id="exerciseDate"
                     v-model="exercise.exerciseDate"
-                    placeholder="Exercise Date"
+                    placeholder="yyyy-mm-dd"
+                    @blur="validateDateFormat"
                 >
+                <p v-if="dateError" class="error-message">Enter the date in the format: yyyy-mm-dd</p>
             </div>
             <div class="form-group">
                 <label for="fitnessCategory">Fitness Category</label>
@@ -71,7 +75,6 @@
 </template>
 
 <script>
-import Datepicker from "vue-datepicker";
 export default {
     props: {
         isVisible: {
@@ -79,9 +82,7 @@ export default {
             required: true,
         },
     },
-    components: {
-        Datepicker,
-    },
+
     data() {
         return {
             exercise: {
@@ -93,12 +94,21 @@ export default {
                 myFitnessCategory: "",
             },
             savedExerciseId: null, // Variable to store the saved exercise ID
+            dateError: false, // Flag to track date format error
+            timeError: false, // Flag to track time format error
         };
     },
+
     methods: {
         submitForm(event) {
             // Prevent the form from submitting and page reload
             event.preventDefault();
+
+            // Check if the date format is valid
+            if (!this.validateDateFormat()) {
+                this.dateError = true;
+                return;
+            }
 
             // Create a new Exercise object to send to the backend
             const newExercise = {
@@ -139,6 +149,22 @@ export default {
                     console.error("Error occurred while creating exercise", error);
                 });
         },
+
+        validateDateFormat() {
+            const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+            if (!this.exercise.exerciseDate.match(datePattern)) {
+                return false;
+            }
+            return true;
+        },
+        validateExerciseTime() {
+            const timePattern = /^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/;
+            if (!this.exercise.exerciseTime.match(timePattern)) {
+                this.timeError = true;
+            } else {
+                this.timeError = false;
+            }
+        },
         closeTable() {
             setTimeout(() => {
                 this.$emit("close-table");
@@ -178,5 +204,11 @@ export default {
 
 .success-message.visible {
     display: block;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }
 </style>
