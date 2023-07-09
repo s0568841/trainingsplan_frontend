@@ -54,8 +54,10 @@
                         class="form-control"
                         id="exerciseTime"
                         v-model="updatedExercise.exerciseTime"
-                        placeholder="Exercise Time"
+                        placeholder="hh:mm:ss"
+                        @blur="validateExerciseTime"
                     >
+                    <p v-if="timeError" class="error-message">Enter the time in the format: HH:mm:ss</p>
                 </div>
                 <div class="form-group">
                     <label for="exerciseDate">Exercise Date</label>
@@ -115,6 +117,7 @@ export default {
                 exerciseDate: "",
                 myFitnessCategory: "",
             },
+            timeError: false,
             isExerciseUpdated: false,
         };
     },
@@ -140,6 +143,10 @@ export default {
                 });
         },
         updateExercise() {
+            if (!this.validateExerciseTime()) {
+                this.timeError = true;
+                return;
+            }
             // Send a PUT request to update the exercise
             fetch(`http://localhost:8080/Exercise/${this.exerciseId}`, {
                 method: "PUT",
@@ -160,6 +167,13 @@ export default {
                 .catch((error) => {
                     console.error("Error occurred while updating exercise", error);
                 });
+        },
+        validateExerciseTime() {
+            const timePattern = /^(?:[01]\d|2[0-3]):(?:[0-5]\d):(?:[0-5]\d)$/;
+            if (!this.updatedExercise.exerciseTime.match(timePattern)) {
+                return false;
+            }
+            return true;
         },
         closeTable() {
             setTimeout(() => {
