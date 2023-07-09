@@ -54,13 +54,12 @@
             </div>
             <div class="form-group">
                 <label for="fitnessCategory">Fitness Category</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    id="fitnessCategory"
-                    v-model="exercise.myFitnessCategory"
-                    placeholder="Fitness Category"
-                >
+                <select v-model="exercise.myFitnessCategory" class="form-control" id="fitnessCategory">
+                    <option value="MACHINE_WORKOUT">Machine Workout</option>
+                    <option value="FREE_WEIGHT">Free Weight</option>
+                    <option value="GENERAL_FITNESS">General Fitness</option>
+                    <option value="NO_STATUS">No Status</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <button class="close-button" @click="closeTable">Close</button>
@@ -72,12 +71,16 @@
 </template>
 
 <script>
+import Datepicker from "vue-datepicker";
 export default {
     props: {
         isVisible: {
             type: Boolean,
             required: true,
         },
+    },
+    components: {
+        Datepicker,
     },
     data() {
         return {

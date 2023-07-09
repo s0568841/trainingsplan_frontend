@@ -69,13 +69,24 @@
                 </div>
                 <div class="form-group">
                     <label for="fitnessCategory">Fitness Category</label>
-                    <input
-                        type="text"
+                    <select
                         class="form-control"
                         id="fitnessCategory"
                         v-model="updatedExercise.myFitnessCategory"
-                        placeholder="Fitness Category"
                     >
+                        <option value="MACHINE_WORKOUT" :selected="exerciseData.myFitnessCategory === 'MACHINE_WORKOUT'">
+                            Machine Workout
+                        </option>
+                        <option value="FREE_WEIGHT" :selected="exerciseData.myFitnessCategory === 'FREE_WEIGHT'">
+                            Free Weight
+                        </option>
+                        <option value="GENERAL_FITNESS" :selected="exerciseData.myFitnessCategory === 'GENERAL_FITNESS'">
+                            General Fitness
+                        </option>
+                        <option value="NO_STATUS" :selected="exerciseData.myFitnessCategory === 'NO_STATUS'">
+                            No Status
+                        </option>
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
                 <button class="close-button" @click="closeTable">Close</button>
